@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { homePath, ticketsPath } from "@/paths";
 
 const geistSans = localFont({
@@ -39,12 +40,15 @@ export default function RootLayout({
           "
         >
           <div>
-            <Link href={homePath()} className="text-lg font-bold">
-              Home
-            </Link>
+            <Button asChild variant={"outline"}>
+              <Link href={homePath()}>Home</Link>
+            </Button>
           </div>
           <div>
-            <Link href={ticketsPath()} className="text-sm underline">
+            <Link
+              href={ticketsPath()}
+              className={buttonVariants({ variant: "outline" })}
+            >
               Tickets
             </Link>
           </div>
