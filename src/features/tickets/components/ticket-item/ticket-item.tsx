@@ -5,10 +5,10 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { deleteTicket } from "@/features/tickets/actions/delete-ticket";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
 import { ticketPath } from "@/paths";
-import { deleteTicket } from "../../actions/delete-ticket";
 
 type DeleteButtonProps = ComponentProps<typeof Button> & {
   ticketId: TicketId;
@@ -31,7 +31,7 @@ type DetailButtonProps = {
 const DetailButton = ({ ticketId }: DetailButtonProps) => {
   return (
     <Button variant={"outline"} size={"icon"} asChild>
-      <Link href={ticketPath(ticketId)}>
+      <Link prefetch href={ticketPath(ticketId)}>
         <LucideSquareArrowUpRight />
       </Link>
     </Button>
