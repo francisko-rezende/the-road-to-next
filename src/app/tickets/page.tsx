@@ -5,7 +5,7 @@ import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
 import { TicketList } from "@/features/tickets/components/ticket-list/ticket-list";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 const TicketsPage = () => {
   return (
