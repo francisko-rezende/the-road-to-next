@@ -5,6 +5,8 @@ import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
 import { TicketList } from "@/features/tickets/components/ticket-list/ticket-list";
 
+export const dynamic = "force-dynamic";
+
 const TicketsPage = () => {
   return (
     <div className="flex flex-1 flex-col gap-y-8">
