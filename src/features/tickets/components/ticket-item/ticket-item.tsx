@@ -1,6 +1,10 @@
 import { Ticket } from "@prisma/client";
 import clsx from "clsx";
-import { LucideSquareArrowUpRight, LucideTrash } from "lucide-react";
+import {
+  LucidePencil,
+  LucideSquareArrowUpRight,
+  LucideTrash,
+} from "lucide-react";
 import Link from "next/link";
 import { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteTicket } from "@/features/tickets/actions/delete-ticket";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
-import { ticketPath } from "@/paths";
+import { ticketEditPath, ticketPath } from "@/paths";
 
 type DeleteButtonProps = ComponentProps<typeof Button> & {
   ticketId: TicketId;
@@ -33,6 +37,20 @@ const DetailButton = ({ ticketId }: DetailButtonProps) => {
     <Button variant={"outline"} size={"icon"} asChild>
       <Link prefetch href={ticketPath(ticketId)}>
         <LucideSquareArrowUpRight />
+      </Link>
+    </Button>
+  );
+};
+
+type EditButtonProps = {
+  ticketId: TicketId;
+};
+
+const EditButton = ({ ticketId }: EditButtonProps) => {
+  return (
+    <Button variant={"outline"} size={"icon"} asChild>
+      <Link prefetch href={ticketEditPath(ticketId)}>
+        <LucidePencil />
       </Link>
     </Button>
   );
@@ -76,7 +94,10 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         {isDetail ? (
           <DeleteButton ticketId={ticket.id} />
         ) : (
-          <DetailButton ticketId={ticket.id} />
+          <>
+            <DetailButton ticketId={ticket.id} />
+            <EditButton ticketId={ticket.id} />
+          </>
         )}
       </div>
     </div>
