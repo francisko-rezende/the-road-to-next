@@ -28,7 +28,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <Label htmlFor="content">Content</Label>
       <Textarea id="content" name="content" defaultValue={ticket?.content} />
       <SubmitButton>{ticket ? "Edit" : "Create"}</SubmitButton>
-      {actionState.messsage}
+      {actionState.message}
     </form>
   );
 };
