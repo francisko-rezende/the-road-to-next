@@ -5,10 +5,15 @@ type FromErrorToActionStateProps = {
   formData?: FormData;
 };
 
+export type FromErrorToActionStateReturn = {
+  message: string;
+  payload?: FormData;
+};
+
 export const fromErrorToActionState = ({
   error,
   formData,
-}: FromErrorToActionStateProps) => {
+}: FromErrorToActionStateProps): FromErrorToActionStateReturn => {
   if (error instanceof ZodError) {
     return {
       message: error.errors[0].message,
