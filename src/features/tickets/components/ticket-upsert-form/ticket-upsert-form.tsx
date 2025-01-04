@@ -2,6 +2,7 @@
 
 import { Ticket } from "@prisma/client";
 import { useActionState } from "react";
+import { FieldError } from "@/components/form/field-error";
 import { SubmitButton } from "@/components/form/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +18,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     upsertTicket.bind(null, ticket?.id),
     {
       message: "",
+      fieldErrors: {},
     },
   );
 
@@ -31,6 +33,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get("title") as string) ?? ticket?.title
         }
       />
+      <FieldError>{actionState.fieldErrors?.title?.[0]}</FieldError>
 
       <Label htmlFor="content">Content</Label>
       <Textarea
@@ -40,8 +43,9 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get("content") as string) ?? ticket?.content
         }
       />
+
+      <FieldError>{actionState.fieldErrors?.content?.[0]}</FieldError>
       <SubmitButton>{ticket ? "Edit" : "Create"}</SubmitButton>
-      {actionState.message}
     </form>
   );
 };

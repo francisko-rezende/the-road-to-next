@@ -8,6 +8,7 @@ type FromErrorToActionStateProps = {
 export type FromErrorToActionStateReturn = {
   message: string;
   payload?: FormData;
+  fieldErrors: Record<string, string[] | undefined>;
 };
 
 export const fromErrorToActionState = ({
@@ -17,6 +18,7 @@ export const fromErrorToActionState = ({
   if (error instanceof ZodError) {
     return {
       message: error.errors[0].message,
+      fieldErrors: error.flatten().fieldErrors,
       payload: formData,
     };
   }
@@ -24,12 +26,14 @@ export const fromErrorToActionState = ({
   if (error instanceof Error) {
     return {
       message: error.message,
+      fieldErrors: {},
       payload: formData,
     };
   }
 
   return {
     message: "An unknown error occured.",
+    fieldErrors: {},
     payload: formData,
   };
 };
