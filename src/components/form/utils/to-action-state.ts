@@ -6,10 +6,31 @@ type FromErrorToActionStateProps = {
 };
 
 export type FromErrorToActionStateReturn = {
+  timeStamp: number;
+  status?: "SUCCESS" | "ERROR";
   message: string;
   payload?: FormData;
   fieldErrors: Record<string, string[] | undefined>;
 };
+
+export const EMPTY_FROM_ERROR_ACTION_STATE: FromErrorToActionStateReturn = {
+  timeStamp: Date.now(),
+  message: "",
+  fieldErrors: {},
+};
+
+export const toActionState = ({
+  message,
+  status,
+}: {
+  message: string;
+  status: FromErrorToActionStateReturn["status"];
+}): FromErrorToActionStateReturn => ({
+  message,
+  fieldErrors: {},
+  status,
+  timeStamp: Date.now(),
+});
 
 export const fromErrorToActionState = ({
   error,
@@ -20,6 +41,8 @@ export const fromErrorToActionState = ({
       message: error.errors[0].message,
       fieldErrors: error.flatten().fieldErrors,
       payload: formData,
+      status: "ERROR",
+      timeStamp: Date.now(),
     };
   }
 
@@ -28,6 +51,8 @@ export const fromErrorToActionState = ({
       message: error.message,
       fieldErrors: {},
       payload: formData,
+      status: "ERROR",
+      timeStamp: Date.now(),
     };
   }
 
@@ -35,5 +60,7 @@ export const fromErrorToActionState = ({
     message: "An unknown error occured.",
     fieldErrors: {},
     payload: formData,
+    status: "ERROR",
+    timeStamp: Date.now(),
   };
 };
