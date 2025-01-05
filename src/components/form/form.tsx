@@ -7,9 +7,9 @@ type FormProps = ComponentProps<"form"> & {
   actionState: FromErrorToActionStateReturn;
 };
 
-export const Form = (props: FormProps) => {
+export const Form = ({ actionState, ...props }: FormProps) => {
   useActionFeedback({
-    actionState: props.actionState,
+    actionState: actionState,
     onSuccess: ({ onArgs: actionState }) => {
       if (actionState.message) {
         toast.success(actionState.message);
