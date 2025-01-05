@@ -2,9 +2,8 @@
 
 import { Ticket } from "@prisma/client";
 import { useActionState } from "react";
-import { toast } from "sonner";
 import { FieldError } from "@/components/form/field-error";
-import { useActionFeedback } from "@/components/form/hooks/useActionFeedback";
+import { Form } from "@/components/form/form";
 import { SubmitButton } from "@/components/form/submit-button";
 import { EMPTY_FROM_ERROR_ACTION_STATE } from "@/components/form/utils/to-action-state";
 import { Input } from "@/components/ui/input";
@@ -22,22 +21,8 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     EMPTY_FROM_ERROR_ACTION_STATE,
   );
 
-  useActionFeedback({
-    actionState,
-    onSuccess: ({ onArgs: actionState }) => {
-      if (actionState.message) {
-        toast.success(actionState.message);
-      }
-    },
-    onError: ({ onArgs: actionState }) => {
-      if (actionState.message) {
-        toast.error(actionState.message);
-      }
-    },
-  });
-
   return (
-    <form action={action} className="flex flex-col gap-y-2">
+    <Form action={action} actionState={actionState}>
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"
@@ -48,7 +33,6 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         }
       />
       <FieldError>{actionState.fieldErrors?.title?.[0]}</FieldError>
-
       <Label htmlFor="content">Content</Label>
       <Textarea
         id="content"
@@ -57,9 +41,8 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get("content") as string) ?? ticket?.content
         }
       />
-
       <FieldError>{actionState.fieldErrors?.content?.[0]}</FieldError>
       <SubmitButton>{ticket ? "Edit" : "Create"}</SubmitButton>
-    </form>
+    </Form>
   );
 };
