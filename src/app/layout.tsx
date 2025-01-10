@@ -37,7 +37,6 @@ export default function RootLayout({
           <main className="flex min-h-screen flex-1 flex-col overflow-y-auto overflow-x-hidden bg-secondary/20 px-8 py-24">
             {children}
           </main>
-          <RedirectToast />
           <Toaster expand />
         </ThemeProvider>
       </body>
