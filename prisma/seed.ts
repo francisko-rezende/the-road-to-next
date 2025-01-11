@@ -6,7 +6,6 @@ const tickets = [
     content: "This is the first ticket from the database.",
     status: "DONE" as const,
     bounty: 499,
-    // deadline: "2024-12-31",
     deadline: new Date().toISOString().split("T")[0],
   },
   {
