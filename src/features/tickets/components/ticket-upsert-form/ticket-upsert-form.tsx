@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { upsertTicket } from "@/features/tickets/actions/upsert-ticket";
+import { fromCent } from "@/utils/currency";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
@@ -65,7 +66,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
             step="0.01"
             defaultValue={
               (actionState.payload?.get("deadline") as string) ??
-              ticket?.deadline
+              (ticket?.bounty ? fromCent(ticket.bounty) : "")
             }
           />
         </div>
