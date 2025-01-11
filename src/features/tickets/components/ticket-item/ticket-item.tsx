@@ -8,7 +8,13 @@ import {
 import Link from "next/link";
 import { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { deleteTicket } from "@/features/tickets/actions/delete-ticket";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
@@ -88,6 +94,10 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
             {ticket.content}
           </p>
         </CardContent>
+        <CardFooter className="flex justify-between">
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">{ticket.bounty}</p>
+        </CardFooter>
       </Card>
 
       <div className="flex flex-col gap-y-1">
