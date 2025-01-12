@@ -58,6 +58,8 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
               ticket?.deadline
             }
           />
+
+          <FieldError>{actionState.fieldErrors?.deadline?.[0]}</FieldError>
         </div>
         <div className="flex-1">
           <Label htmlFor="bounty">Bounty</Label>
@@ -67,10 +69,12 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
             type="number"
             step="0.01"
             defaultValue={
-              (actionState.payload?.get("deadline") as string) ??
+              (actionState.payload?.get("bounty") as string) ??
               (ticket?.bounty ? fromCent(ticket.bounty) : "")
             }
           />
+
+          <FieldError>{actionState.fieldErrors?.bounty?.[0]}</FieldError>
         </div>
       </div>
 
