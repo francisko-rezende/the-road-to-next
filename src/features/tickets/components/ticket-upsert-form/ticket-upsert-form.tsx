@@ -51,6 +51,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         <div className="flex-1">
           <Label htmlFor="deadline">Deadline</Label>
           <DatePicker
+            key={actionState.timeStamp}
             id="deadline"
             name="deadline"
             defaultValue={
