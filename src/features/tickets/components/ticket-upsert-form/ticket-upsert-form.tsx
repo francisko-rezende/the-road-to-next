@@ -23,10 +23,14 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     EMPTY_FROM_ERROR_ACTION_STATE,
   );
 
-  console.log(actionState);
+  const handleSuccess = () => {};
 
   return (
-    <Form action={action} actionState={actionState}>
+    <Form
+      action={action}
+      actionState={actionState}
+      handleSuccess={handleSuccess}
+    >
       <Label htmlFor="title">Title</Label>
       <Input
         id="title"
