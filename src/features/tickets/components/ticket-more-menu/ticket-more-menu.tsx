@@ -30,10 +30,17 @@ const TicketStatusRadioGroupItems = ({
   ticket,
 }: TicketStatusRadioGroupItemsProps) => {
   const handleUpdateTicketStatus = async (value: string) => {
-    const result = await updateTicketStatus({
+    const promise = updateTicketStatus({
       id: ticket.id,
       ticketStatus: value as TicketStatus,
     });
+
+    toast.promise(promise, {
+      loading: "Updating status...",
+    });
+
+    const result = await promise;
+
     if (result.status === "ERROR") {
       toast.error(result.message);
       return;
