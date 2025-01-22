@@ -10,7 +10,7 @@ export const SubmitButton = (props: SubmitButtonProps) => {
 
   return (
     <Button type="submit" disabled={pending}>
-      {pending && <LucideLoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
+      {pending && <LucideLoaderCircle className="h-4 w-4 animate-spin" />}
       {props.children}
     </Button>
   );
