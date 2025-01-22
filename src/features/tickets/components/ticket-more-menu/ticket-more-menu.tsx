@@ -105,10 +105,8 @@ export const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
     action: deleteTicket.bind(null, ticket.id),
     trigger: (
       <DropdownMenuItem>
-        <Button variant="outline">
-          <LucideTrash className="h-4 w-4" />
-          <span>Delete</span>
-        </Button>
+        <LucideTrash className="h-4 w-4" />
+        <span>Delete</span>
       </DropdownMenuItem>
     ),
   });
