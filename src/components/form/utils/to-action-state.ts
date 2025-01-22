@@ -37,13 +37,6 @@ export const fromErrorToActionState = ({
   formData,
 }: FromErrorToActionStateProps): FromErrorToActionStateReturn => {
   if (error instanceof ZodError) {
-    console.log({
-      message: "",
-      fieldErrors: error.flatten().fieldErrors,
-      payload: formData,
-      status: "ERROR",
-      timeStamp: Date.now(),
-    });
     return {
       message: "",
       fieldErrors: error.flatten().fieldErrors,

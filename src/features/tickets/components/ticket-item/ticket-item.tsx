@@ -4,11 +4,8 @@ import {
   LucideMoreVertical,
   LucidePencil,
   LucideSquareArrowUpRight,
-  LucideTrash,
 } from "lucide-react";
 import Link from "next/link";
-import { ComponentProps } from "react";
-import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,30 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { deleteTicket } from "@/features/tickets/actions/delete-ticket";
 import { TicketMoreMenu } from "@/features/tickets/components//ticket-more-menu";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
 import { ticketEditPath, ticketPath } from "@/paths";
 import { toCurrencyFromCent } from "@/utils/currency";
 
-// type DeleteButtonProps = ComponentProps<typeof Button> & {
-//   ticketId: TicketId;
-// };
-//
-// const DeleteButton = ({ ticketId, ...props }: DeleteButtonProps) => {
-//   return (
-//     <ConfirmDialog
-//       action={deleteTicket.bind(null, ticketId)}
-//       trigger={
-//         <Button variant="outline" size="icon" {...props}>
-//           <LucideTrash className="h-4 w-4" />
-//         </Button>
-//       }
-//     ></ConfirmDialog>
-//   );
-// };
-//
 type DetailButtonProps = {
   ticketId: TicketId;
 };
@@ -112,7 +91,6 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
           <>
-            {/* <DeleteButton ticketId={ticket.id} /> */}
             <EditButton ticketId={ticket.id} />
           </>
         ) : (
