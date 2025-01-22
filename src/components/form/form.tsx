@@ -7,9 +7,11 @@ type FormProps = ComponentProps<"form"> & {
   actionState: FromErrorToActionStateReturn;
   onSuccess?: (actionState: FromErrorToActionStateReturn) => void;
   onError?: (actionState: FromErrorToActionStateReturn) => void;
+  action: (payload: FormData) => void;
 };
 
 export const Form = ({
+  action,
   actionState,
   onSuccess,
   onError,
@@ -33,5 +35,9 @@ export const Form = ({
     },
   });
 
-  return <form {...props} className="flex flex-col gap-y-2" />;
+  return (
+    <form action={action} className="flex flex-col gap-y-2">
+      {props.children}
+    </form>
+  );
 };
