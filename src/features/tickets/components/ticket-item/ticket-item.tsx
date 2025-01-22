@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ComponentProps } from "react";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,20 +24,23 @@ import { TicketId } from "@/features/tickets/types";
 import { ticketEditPath, ticketPath } from "@/paths";
 import { toCurrencyFromCent } from "@/utils/currency";
 
-type DeleteButtonProps = ComponentProps<typeof Button> & {
-  ticketId: TicketId;
-};
-
-const DeleteButton = ({ ticketId, ...props }: DeleteButtonProps) => {
-  return (
-    <form action={deleteTicket.bind(null, ticketId)}>
-      <Button variant="outline" size="icon" {...props}>
-        <LucideTrash className="h-4 w-4" />
-      </Button>
-    </form>
-  );
-};
-
+// type DeleteButtonProps = ComponentProps<typeof Button> & {
+//   ticketId: TicketId;
+// };
+//
+// const DeleteButton = ({ ticketId, ...props }: DeleteButtonProps) => {
+//   return (
+//     <ConfirmDialog
+//       action={deleteTicket.bind(null, ticketId)}
+//       trigger={
+//         <Button variant="outline" size="icon" {...props}>
+//           <LucideTrash className="h-4 w-4" />
+//         </Button>
+//       }
+//     ></ConfirmDialog>
+//   );
+// };
+//
 type DetailButtonProps = {
   ticketId: TicketId;
 };
@@ -107,7 +111,10 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
-          <DeleteButton ticketId={ticket.id} />
+          <>
+            {/* <DeleteButton ticketId={ticket.id} /> */}
+            <EditButton ticketId={ticket.id} />
+          </>
         ) : (
           <>
             <DetailButton ticketId={ticket.id} />
