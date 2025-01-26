@@ -1,3 +1,5 @@
+"use client";
+
 import { LucideLoaderCircle } from "lucide-react";
 import { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
