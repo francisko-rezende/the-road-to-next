@@ -42,7 +42,8 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get("title") as string) ?? ticket?.title
         }
       />
-      <FieldError>{actionState.fieldErrors?.title?.[0]}</FieldError>
+      <FieldError actionState={actionState} name="title" />
+
       <Label htmlFor="content">Content</Label>
       <Textarea
         id="content"
@@ -51,7 +52,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get("content") as string) ?? ticket?.content
         }
       />
-      <FieldError>{actionState.fieldErrors?.content?.[0]}</FieldError>
+      <FieldError actionState={actionState} name="content" />
 
       <div className="mb-1 flex gap-x-2">
         <div className="flex-1">
@@ -66,8 +67,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
               ticket?.deadline
             }
           />
-
-          <FieldError>{actionState.fieldErrors?.deadline?.[0]}</FieldError>
+          <FieldError actionState={actionState} name="deadline" />
         </div>
         <div className="flex-1">
           <Label htmlFor="bounty">Bounty</Label>
@@ -81,8 +81,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
               (ticket?.bounty ? fromCent(ticket.bounty) : "")
             }
           />
-
-          <FieldError>{actionState.fieldErrors?.bounty?.[0]}</FieldError>
+          <FieldError actionState={actionState} name="deadline" />
         </div>
       </div>
 
