@@ -21,7 +21,7 @@ export const SignInForm = () => {
       />
       <FieldError actionState={actionState} name="email" />
 
-      <Input name="password" placeholder="Password" />
+      <Input name="password" placeholder="Password" type="password" />
       <FieldError
         actionState={actionState}
         name="password"
