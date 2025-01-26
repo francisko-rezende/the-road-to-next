@@ -12,7 +12,6 @@ export const SignUpForm = () => {
     signUp,
     EMPTY_FROM_ERROR_ACTION_STATE,
   );
-  console.log({ actionState });
   return (
     <Form action={action} actionState={actionState}>
       <Input
