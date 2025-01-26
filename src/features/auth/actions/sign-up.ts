@@ -39,7 +39,6 @@ export const signUp = async (
   _actionState: FromErrorToActionStateReturn,
   formData: FormData,
 ) => {
-  console.log(formData);
   try {
     const { username, email, password } = signUpSchema.parse(
       Object.fromEntries(formData),
