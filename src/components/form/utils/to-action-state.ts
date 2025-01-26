@@ -22,13 +22,16 @@ export const EMPTY_FROM_ERROR_ACTION_STATE: FromErrorToActionStateReturn = {
 export const toActionState = ({
   message,
   status,
+  payload,
 }: {
   message: string;
   status: FromErrorToActionStateReturn["status"];
+  payload?: FormData;
 }): FromErrorToActionStateReturn => ({
   message,
   fieldErrors: {},
   status,
+  payload,
   timeStamp: Date.now(),
 });
 

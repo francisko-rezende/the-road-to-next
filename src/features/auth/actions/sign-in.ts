@@ -36,6 +36,7 @@ export const signIn = async (
       return toActionState({
         message: "Incorrect email or password",
         status: "ERROR",
+        payload: formData,
       });
     }
     const validPassword = await verify(user.passwordHash, password);
@@ -44,6 +45,7 @@ export const signIn = async (
       return toActionState({
         message: "Incorrect email or password",
         status: "ERROR",
+        payload: formData,
       });
     }
     const cookieStore = await cookies();

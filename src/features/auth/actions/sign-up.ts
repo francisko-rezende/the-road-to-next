@@ -1,12 +1,14 @@
 "use server";
 
 import { hash } from "@node-rs/argon2";
+import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import {
   fromErrorToActionState,
   FromErrorToActionStateReturn,
+  toActionState,
 } from "@/components/form/utils/to-action-state";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
@@ -22,8 +24,8 @@ const signUpSchema = z
         return value.includes("");
       }, "Username cannot contain spaces"),
     email: z.string().min(1).max(191).email(),
-    password: z.string().min(1).max(191),
-    confirmPassword: z.string().min(1).max(191),
+    password: z.string().min(6).max(191),
+    confirmPassword: z.string().min(6).max(191),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
@@ -61,6 +63,18 @@ export const signUp = async (
       sessionCookie.attributes,
     );
   } catch (error) {
+    const hasUniqueFieldError =
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002";
+
+    if (hasUniqueFieldError) {
+      return toActionState({
+        message: "Either email or username already in use",
+        status: "ERROR",
+        payload: formData,
+      });
+    }
+
     return fromErrorToActionState({ error, formData });
   }
 
