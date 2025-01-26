@@ -1,7 +1,9 @@
-import { LucideKanban } from "lucide-react";
+import { LucideKanban, LucideLogOut } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { signOut } from "@/features/auth/actions/sign-out";
 import { homePath, signInPath, signUpPath, ticketsPath } from "@/paths";
+import { SubmitButton } from "../form/submit-button";
 import { ThemeSwitcher } from "../theme/theme-switcher";
 
 export const Header = () => {
@@ -25,6 +27,9 @@ export const Header = () => {
       >
         Sign in
       </Link>
+      <form action={signOut}>
+        <SubmitButton icon={<LucideLogOut />}>Sign out</SubmitButton>
+      </form>
     </>
   );
   return (
