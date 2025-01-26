@@ -4,7 +4,7 @@ import { lucia } from "@/lib/lucia";
 
 export const getAuth = cache(async () => {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(lucia.sessionCookieName)?.name ?? null;
+  const sessionId = cookieStore.get(lucia.sessionCookieName)?.value ?? null;
 
   if (!sessionId) {
     return {
