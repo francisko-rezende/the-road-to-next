@@ -5,7 +5,7 @@ import { FieldError } from "@/components/form/field-error";
 import { SubmitButton } from "@/components/form/submit-button";
 import { EMPTY_FROM_ERROR_ACTION_STATE } from "@/components/form/utils/to-action-state";
 import { Input } from "@/components/ui/input";
-import { signUp } from "../actions/sign-up";
+import { signUp } from "../../actions/sign-up";
 
 export const SignUpForm = () => {
   const [actionState, action] = useActionState(
