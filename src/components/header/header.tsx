@@ -1,26 +1,16 @@
 "use client";
 
-import { User as AuthUser } from "lucia";
 import { LucideKanban, LucideLogOut } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { signOut } from "@/features/auth/actions/sign-out";
-import { getAuth } from "@/features/auth/queries/get-auth";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 import { homePath, signInPath, signUpPath, ticketsPath } from "@/paths";
 import { SubmitButton } from "../form/submit-button";
 import { ThemeSwitcher } from "../theme/theme-switcher";
 
 export const Header = () => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { user } = await getAuth();
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
+  const { user, isFetched } = useAuth();
 
   const navItems = user ? (
     <>
@@ -50,8 +40,13 @@ export const Header = () => {
       </Link>
     </>
   );
+
+  if (!isFetched) {
+    return null;
+  }
+
   return (
-    <nav className="supports-backdrop-blur:bg-background/60 fixed left-0 right-0 top-0 z-20 flex w-full justify-between border-b bg-background/95 px-5 py-2.5 backdrop-blur">
+    <nav className="supports-backdrop-blur:bg-background/60 fixed left-0 right-0 top-0 z-20 flex w-full animate-header-from-top justify-between border-b bg-background/95 px-5 py-2.5 backdrop-blur">
       <div className="flex items-center gap-x-2">
         <Button asChild variant={"ghost"}>
           <Link href={homePath()}>
