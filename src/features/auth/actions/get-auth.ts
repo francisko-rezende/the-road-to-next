@@ -1,11 +1,12 @@
 "use server";
+
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { lucia } from "@/lib/lucia";
+import { validateSessionToken } from "@/lib/lucia";
 
 export const getAuth = cache(async () => {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId = cookieStore.get("session")?.value ?? null;
 
   if (!sessionId) {
     return {
@@ -14,31 +15,5 @@ export const getAuth = cache(async () => {
     };
   }
 
-  const result = await lucia.validateSession(sessionId);
-
-  try {
-    const isFreshSession = result.session && result.session.fresh;
-
-    if (isFreshSession) {
-      const sessionCookie = lucia.createSessionCookie(result.session.id);
-      cookieStore.set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes,
-      );
-    }
-
-    if (!result.session) {
-      const sessionCookie = lucia.createBlankSessionCookie();
-      cookieStore.set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes,
-      );
-    }
-  } catch {
-    //do nothing in RSC
-  }
-
-  return result;
+  return await validateSessionToken(sessionId);
 });

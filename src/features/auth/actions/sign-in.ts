@@ -1,7 +1,6 @@
 "use server";
 
 import { verify } from "@node-rs/argon2";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import {
@@ -9,9 +8,10 @@ import {
   FromErrorToActionStateReturn,
   toActionState,
 } from "@/components/form/utils/to-action-state";
-import { lucia } from "@/lib/lucia";
+import { createSession, generateSessionToken } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
+import { setSessionTokenCookie } from "@/utils/cookies";
 
 const signInSchema = z.object({
   email: z.string().min(1).max(191).email(),
@@ -48,14 +48,10 @@ export const signIn = async (
         payload: formData,
       });
     }
-    const cookieStore = await cookies();
-    const session = await lucia.createSession(user.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookieStore.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, user.id);
+    await setSessionTokenCookie(sessionToken, session.expiresAt);
   } catch (error) {
     return fromErrorToActionState({ error, formData });
   }
