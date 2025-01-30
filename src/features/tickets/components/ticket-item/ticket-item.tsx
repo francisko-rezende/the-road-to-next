@@ -49,7 +49,15 @@ const EditButton = ({ ticketId }: EditButtonProps) => {
 };
 
 type TicketItemProps = {
-  ticket: Prisma.TicketGetPayload<{ include: { user: true } }>;
+  ticket: Prisma.TicketGetPayload<{
+    include: {
+      user: {
+        select: {
+          username: true;
+        };
+      };
+    };
+  }>;
   isDetail?: boolean;
 };
 
