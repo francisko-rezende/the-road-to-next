@@ -1,4 +1,4 @@
-import { Ticket } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import {
   LucideMoreVertical,
@@ -49,7 +49,7 @@ const EditButton = ({ ticketId }: EditButtonProps) => {
 };
 
 type TicketItemProps = {
-  ticket: Ticket;
+  ticket: Prisma.TicketGetPayload<{ include: { user: true } }>;
   isDetail?: boolean;
 };
 
@@ -81,7 +81,9 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </p>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.username}
+          </p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFromCent(ticket.bounty)}
           </p>
