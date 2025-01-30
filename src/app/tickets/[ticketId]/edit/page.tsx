@@ -19,9 +19,9 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
   const isTicketFound = !!ticket;
   const isTicketOwner = isOwner({ authUser: user, entity: ticket });
 
-  if (!isTicketFound || !isTicketOwner) {
-    notFound();
-  }
+  // if (!isTicketFound || !isTicketOwner) {
+  //   notFound();
+  // }
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
