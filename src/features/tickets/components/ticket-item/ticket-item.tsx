@@ -14,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getAuth } from "@/features/auth/actions/get-auth";
+import { isOwner } from "@/features/auth/utils/is-owner";
 import { TicketMoreMenu } from "@/features/tickets/components//ticket-more-menu";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
@@ -61,7 +63,10 @@ type TicketItemProps = {
   isDetail?: boolean;
 };
 
-export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
+export const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
+  const { user } = await getAuth();
+  const isTicketOwner = isOwner({ authUser: user, entity: ticket });
+
   return (
     <div
       className={clsx("flex w-full gap-x-1", {
@@ -100,23 +105,23 @@ export const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
-          <>
-            <EditButton ticketId={ticket.id} />
-          </>
+          <>{isTicketOwner && <EditButton ticketId={ticket.id} />}</>
         ) : (
           <>
             <DetailButton ticketId={ticket.id} />
-            <EditButton ticketId={ticket.id} />
+            {isTicketOwner && <EditButton ticketId={ticket.id} />}
           </>
         )}
-        <TicketMoreMenu
-          ticket={ticket}
-          trigger={
-            <Button variant="outline" size="icon">
-              <LucideMoreVertical className="h-4 w-4" />
-            </Button>
-          }
-        />
+        {isTicketOwner && (
+          <TicketMoreMenu
+            ticket={ticket}
+            trigger={
+              <Button variant="outline" size="icon">
+                <LucideMoreVertical className="h-4 w-4" />
+              </Button>
+            }
+          />
+        )}
       </div>
     </div>
   );
