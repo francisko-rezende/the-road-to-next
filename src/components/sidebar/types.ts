@@ -5,4 +5,5 @@ export type NavItem = {
   title: string;
   href: string;
   icon: ReactElement;
+  matching: string[];
 };
