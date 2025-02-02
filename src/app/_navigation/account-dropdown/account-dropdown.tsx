@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/actions/sign-out";
 import { accountPasswordPath, accountProfilePath } from "@/paths";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
 
 type AccountDropdownProps = {
   user: User;

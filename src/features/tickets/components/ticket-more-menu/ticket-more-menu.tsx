@@ -25,7 +25,7 @@ const TicketStatusRadioGroupItems = ({
 }: TicketStatusRadioGroupItemsProps) => {
   const handleUpdateTicketStatus = async (value: string) => {
     const promise = updateTicketStatus({
-      id: ticket.id,
+      ticketId: ticket.id,
       ticketStatus: value as TicketStatus,
     });
 

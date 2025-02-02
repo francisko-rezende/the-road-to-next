@@ -6,7 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { homePath, signInPath, signUpPath } from "@/paths";
 import { AccountDropdown } from "../account-dropdown";
-import { ThemeSwitcher } from "../theme/theme-switcher";
+import { ThemeSwitcher } from "../../../components/theme/theme-switcher";
 
 export const Header = () => {
   const { user, isFetched } = useAuth();
