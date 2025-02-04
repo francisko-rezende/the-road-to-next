@@ -4,8 +4,13 @@ import { Heading } from "@/components/heading";
 import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
 import { TicketList } from "@/features/tickets/components/ticket-list/ticket-list";
+import { SearchParams } from "@/features/tickets/search-params";
 
-const HomePage = () => {
+type HomePageProps = {
+  searchParams: SearchParams;
+};
+
+const HomePage = ({ searchParams }: HomePageProps) => {
   return (
     <div className="flex flex-1 flex-col gap-y-8">
       <Heading
@@ -15,7 +20,7 @@ const HomePage = () => {
 
       <ErrorBoundary fallback={<Placeholder label="Something went wrong" />}>
         <Suspense fallback={<Spinner />}>
-          <TicketList />
+          <TicketList searchParams={searchParams} />
         </Suspense>
       </ErrorBoundary>
     </div>

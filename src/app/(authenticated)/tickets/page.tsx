@@ -7,8 +7,13 @@ import { Spinner } from "@/components/spinner";
 import { getAuth } from "@/features/auth/actions/get-auth";
 import { TicketList } from "@/features/tickets/components/ticket-list/ticket-list";
 import { TicketUpsertForm } from "@/features/tickets/components/ticket-upsert-form/ticket-upsert-form";
+import { SearchParams } from "@/features/tickets/search-params";
 
-const TicketsPage = async () => {
+type TicketsPageParams = {
+  params: SearchParams;
+};
+
+const TicketsPage = async ({ params }: TicketsPageParams) => {
   const { user } = await getAuth();
   return (
     <div className="flex flex-1 flex-col gap-y-8">
@@ -23,7 +28,7 @@ const TicketsPage = async () => {
 
       <ErrorBoundary fallback={<Placeholder label="Something went wrong" />}>
         <Suspense fallback={<Spinner />}>
-          <TicketList userId={user?.id} />
+          <TicketList userId={user?.id} searchParams={params} />
         </Suspense>
       </ErrorBoundary>
     </div>
