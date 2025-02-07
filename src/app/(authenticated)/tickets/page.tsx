@@ -1,3 +1,4 @@
+import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { CardCompact } from "@/components/card-compact";
@@ -7,13 +8,13 @@ import { Spinner } from "@/components/spinner";
 import { getAuth } from "@/features/auth/actions/get-auth";
 import { TicketList } from "@/features/tickets/components/ticket-list/ticket-list";
 import { TicketUpsertForm } from "@/features/tickets/components/ticket-upsert-form/ticket-upsert-form";
-import { SearchParams } from "@/features/tickets/search-params";
+import { searchParamsCache } from "@/features/tickets/search-params";
 
 type TicketsPageParams = {
-  params: SearchParams;
+  searchParams: Promise<SearchParams>;
 };
 
-const TicketsPage = async ({ params }: TicketsPageParams) => {
+const TicketsPage = async ({ searchParams }: TicketsPageParams) => {
   const { user } = await getAuth();
   return (
     <div className="flex flex-1 flex-col gap-y-8">
@@ -28,7 +29,10 @@ const TicketsPage = async ({ params }: TicketsPageParams) => {
 
       <ErrorBoundary fallback={<Placeholder label="Something went wrong" />}>
         <Suspense fallback={<Spinner />}>
-          <TicketList userId={user?.id} searchParams={params} />
+          <TicketList
+            userId={user?.id}
+            searchParams={searchParamsCache.parse(await searchParams)}
+          />
         </Suspense>
       </ErrorBoundary>
     </div>
