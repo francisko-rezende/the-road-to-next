@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
+import { sortParser } from "@/features/tickets/search-params";
 import {
   Select,
   SelectContent,
@@ -15,28 +16,14 @@ type Option = {
 };
 
 type SortSelectProps = {
-  defaultValue: string;
   options: Option[];
 };
 
-export const SortSelect = ({ defaultValue, options }: SortSelectProps) => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-  const sortValue = searchParams.get("sort")?.toString() || defaultValue;
+export const SortSelect = ({ options }: SortSelectProps) => {
+  const [sortValue, setSortValue] = useQueryState("sort", sortParser);
 
   const handleSort = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    if (value === defaultValue) {
-      params.delete("sort");
-    } else if (value) {
-      params.set("sort", value);
-    } else {
-      params.delete("sort");
-    }
-
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+    setSortValue(value);
   };
 
   return (
