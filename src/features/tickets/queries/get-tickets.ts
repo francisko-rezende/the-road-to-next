@@ -16,8 +16,7 @@ export const getTickets = async ({ userId, searchParams }: GetTicketsArgs) => {
       },
     },
     orderBy: {
-      ...(searchParams.sort === "newest" && { createdAt: "desc" }),
-      ...(searchParams.sort === "bounty" && { bounty: "desc" }),
+      [searchParams.sortKey]: searchParams.sortValue,
     },
     include: {
       user: {
