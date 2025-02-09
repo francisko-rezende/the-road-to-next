@@ -23,10 +23,8 @@ type SortSelectProps = {
 export const SortSelect = ({ options }: SortSelectProps) => {
   const [sort, setSort] = useQueryStates(sortParser, sortOptions);
 
-  const handleSort = (sortKey: string) => {
-    const sortValue = options.find(
-      (option) => option.sortKey === sortKey,
-    )?.sortValue;
+  const handleSort = (compositeKey: string) => {
+    const [sortKey, sortValue] = compositeKey.split("_");
 
     setSort({
       sortKey,
@@ -35,14 +33,20 @@ export const SortSelect = ({ options }: SortSelectProps) => {
   };
 
   return (
-    <Select defaultValue={sort.sortKey} onValueChange={handleSort}>
+    <Select
+      defaultValue={sort.sortKey + "_" + sort.sortValue}
+      onValueChange={handleSort}
+    >
       <SelectTrigger className="w-[280px]">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => {
           return (
-            <SelectItem key={option.sortKey} value={option.sortKey}>
+            <SelectItem
+              key={option.sortKey + option.sortValue}
+              value={option.sortKey + "_" + option.sortValue}
+            >
               {option.label}
             </SelectItem>
           );
