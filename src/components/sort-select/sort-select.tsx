@@ -1,7 +1,6 @@
 "use client";
 
-import { useQueryStates } from "nuqs";
-import { sortOptions, sortParser } from "@/features/tickets/search-params";
+import { SortSelectOption } from "@/types/sort-select-option";
 import {
   Select,
   SelectContent,
@@ -10,23 +9,22 @@ import {
   SelectValue,
 } from "../ui/select";
 
-type Option = {
-  label: string;
-  sortValue: string;
+type SortObject = {
   sortKey: string;
+  sortValue: string;
 };
 
 type SortSelectProps = {
-  options: Option[];
+  options: SortSelectOption[];
+  value: SortObject;
+  onChange: (sort: SortObject) => void;
 };
 
-export const SortSelect = ({ options }: SortSelectProps) => {
-  const [sort, setSort] = useQueryStates(sortParser, sortOptions);
-
+export const SortSelect = ({ options, value, onChange }: SortSelectProps) => {
   const handleSort = (compositeKey: string) => {
     const [sortKey, sortValue] = compositeKey.split("_");
 
-    setSort({
+    onChange({
       sortKey,
       sortValue,
     });
@@ -34,7 +32,7 @@ export const SortSelect = ({ options }: SortSelectProps) => {
 
   return (
     <Select
-      defaultValue={sort.sortKey + "_" + sort.sortValue}
+      defaultValue={value.sortKey + "_" + value.sortValue}
       onValueChange={handleSort}
     >
       <SelectTrigger className="w-[280px]">
