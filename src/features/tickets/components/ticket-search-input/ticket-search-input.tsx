@@ -1,3 +1,4 @@
+"use client";
 import { useQueryState } from "nuqs";
 import React from "react";
 import { SearchInput } from "@/components/search-input";
