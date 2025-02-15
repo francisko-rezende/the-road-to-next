@@ -76,7 +76,7 @@ export const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
     >
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>
+          <CardTitle className="flex gap-x-2">
             <span>{TICKET_ICONS[ticket.status]}</span>
             <span className="truncate text-lg font-semibold">
               {ticket.title}
