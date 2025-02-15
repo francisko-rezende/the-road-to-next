@@ -3,10 +3,10 @@
   "plugins": ["simple-import-sort"],
   "rules": {
     "simple-import-sort/imports": [
-      "error",
+      "off",
       { "groups": [["^\\u0000", "^node:", "^@?\\w", "^", "^\\."]] }
     ],
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "off"
   },
   "parserOptions": {
     "sourceType": "module",
