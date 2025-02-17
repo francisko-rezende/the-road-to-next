@@ -7,14 +7,21 @@ type GetTicketsArgs = {
 };
 
 export const getTickets = async ({ userId, searchParams }: GetTicketsArgs) => {
-  return await prisma.ticket.findMany({
-    where: {
-      userId,
-      title: {
-        contains: searchParams.search,
-        mode: "insensitive",
-      },
+  const where = {
+    userId,
+    title: {
+      contains: searchParams.search,
+      mode: "insensitive",
     },
+  } as const;
+
+  const skip = searchParams.page * searchParams.size;
+  const take = searchParams.size;
+
+  return await prisma.ticket.findMany({
+    where,
+    skip,
+    take,
     orderBy: {
       [searchParams.sortKey]: searchParams.sortValue,
     },
