@@ -11,14 +11,14 @@ export const getTickets = async ({ userId, searchParams }: GetTicketsArgs) => {
     userId,
     title: {
       contains: searchParams.search,
-      mode: "insensitive",
+      mode: "insensitive" as const,
     },
-  } as const;
+  };
 
   const skip = searchParams.page * searchParams.size;
   const take = searchParams.size;
 
-  return await prisma.ticket.findMany({
+  const tickets = await prisma.ticket.findMany({
     where,
     skip,
     take,
@@ -33,4 +33,8 @@ export const getTickets = async ({ userId, searchParams }: GetTicketsArgs) => {
       },
     },
   });
+
+  const count = await prisma.ticket.count({ where });
+
+  return { list: tickets, metada: { count, hasNextPage: count > skip + take } };
 };

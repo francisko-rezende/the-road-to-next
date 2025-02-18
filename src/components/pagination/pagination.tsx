@@ -9,6 +9,10 @@ type PageAndSize = {
 type PaginationProps = {
   pagination: PageAndSize;
   onPagination: (pagination: PageAndSize) => void;
+  paginatedMetadata: {
+    count: number;
+    hasNextPage: boolean;
+  };
 };
 
 type PaginationButtonProps = ComponentProps<typeof Button>;
@@ -17,11 +21,16 @@ const PaginationButton = (props: PaginationButtonProps) => {
   return <Button variant={"outline"} size={"sm"} disabled={false} {...props} />;
 };
 
-export const Pagination = ({ pagination, onPagination }: PaginationProps) => {
+export const Pagination = ({
+  pagination,
+  onPagination,
+  paginatedMetadata: { count, hasNextPage },
+}: PaginationProps) => {
   const startOffset = pagination.page * pagination.size + 1;
   const endOffset = startOffset - 1 + pagination.size;
+  const actualEndOffset = Math.min(endOffset, count);
 
-  const label = `${startOffset} - ${endOffset} of X`;
+  const label = `${startOffset} - ${actualEndOffset} of ${count}`;
 
   const handlePreviousPage = () => {
     onPagination({ ...pagination, page: pagination.page - 1 });
@@ -37,11 +46,13 @@ export const Pagination = ({ pagination, onPagination }: PaginationProps) => {
       <div>
         <PaginationButton
           onClick={handlePreviousPage}
-          disabled={pagination.page <= 1}
+          disabled={pagination.page < 1}
         >
           Previous
         </PaginationButton>
-        <PaginationButton onClick={handleNextPage}>Next</PaginationButton>
+        <PaginationButton onClick={handleNextPage} disabled={!hasNextPage}>
+          Next
+        </PaginationButton>
       </div>
     </div>
   );
