@@ -12,6 +12,7 @@ export const FieldError = ({
   ...props
 }: FieldErrorProps) => {
   const message = actionState.fieldErrors[name]?.[0];
+  // console.log(name, actionState);
 
   if (!message) return null;
 
