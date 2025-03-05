@@ -1,5 +1,3 @@
-"use client";
-
 import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import {
