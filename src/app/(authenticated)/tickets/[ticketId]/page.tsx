@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { getComments } from "@/features/comments/queries/get-comments";
 import { TicketItem } from "@/features/tickets/components/ticket-item";
 import { getTicket } from "@/features/tickets/queries/get-ticket";
+import { ticketsPath } from "@/paths";
 
 type TicketPageProps = {
   params: Promise<{
@@ -29,7 +30,7 @@ const TicketPage = async ({ params }: TicketPageProps) => {
     <div className="flex flex-1 flex-col gap-y-8">
       <Breadcrumbs
         breadcrumbs={[
-          { title: "Tickets", href: "/ticket" },
+          { title: "Tickets", href: ticketsPath() },
           { title: ticket.title },
         ]}
       />

@@ -1,6 +1,4 @@
 import { CardCompact } from "@/components/card-compact";
-import { getAuth } from "@/features/auth/actions/get-auth";
-import { isOwner } from "@/features/auth/utils/is-owner";
 import { CommentWithMetadata } from "../../types/comment-with-metadata";
 import { CommentCreateForm } from "../comment-create-form";
 import { CommentDeleteButton } from "../comment-delete-button/comment-delete-button";
@@ -10,9 +8,7 @@ type CommentsProps = {
   ticketId: string;
   comments?: CommentWithMetadata[];
 };
-export const Comments = async ({ ticketId, comments = [] }: CommentsProps) => {
-  const { user } = await getAuth();
-
+export const Comments = ({ ticketId, comments = [] }: CommentsProps) => {
   return (
     <>
       <CardCompact
@@ -27,7 +23,7 @@ export const Comments = async ({ ticketId, comments = [] }: CommentsProps) => {
               key={comment.id}
               comment={comment}
               buttons={
-                isOwner({ authUser: user, entity: comment })
+                comment.isOwner
                   ? [<CommentDeleteButton key="0" id={comment.id} />]
                   : []
               }

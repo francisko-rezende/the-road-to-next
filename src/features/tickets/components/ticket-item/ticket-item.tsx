@@ -1,3 +1,5 @@
+"use client";
+
 import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import {
@@ -14,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getAuth } from "@/features/auth/actions/get-auth";
-import { isOwner } from "@/features/auth/utils/is-owner";
 import { Comments } from "@/features/comments/components/comments";
 import { CommentWithMetadata } from "@/features/comments/types/comment-with-metadata";
 import { TicketMoreMenu } from "@/features/tickets/components//ticket-more-menu";
@@ -61,19 +61,15 @@ type TicketItemProps = {
         };
       };
     };
-  }>;
+  }> & { isOwner: boolean };
   isDetail?: boolean;
   comments?: CommentWithMetadata[];
 };
 
-export const TicketItem = async ({
-  ticket,
-  isDetail,
-  comments,
-}: TicketItemProps) => {
-  const { user } = await getAuth();
+export const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
+  // const { user } = await getAuth();
 
-  const isTicketOwner = isOwner({ authUser: user, entity: ticket });
+  // const isTicketOwner = isOwner({ authUser: user, entity: ticket });
 
   return (
     <div
@@ -114,14 +110,14 @@ export const TicketItem = async ({
 
         <div className="flex flex-col gap-y-1">
           {isDetail ? (
-            <>{isTicketOwner && <EditButton ticketId={ticket.id} />}</>
+            <>{ticket.isOwner && <EditButton ticketId={ticket.id} />}</>
           ) : (
             <>
               <DetailButton ticketId={ticket.id} />
-              {isTicketOwner && <EditButton ticketId={ticket.id} />}
+              {ticket.isOwner && <EditButton ticketId={ticket.id} />}
             </>
           )}
-          {isTicketOwner && (
+          {ticket.isOwner && (
             <TicketMoreMenu
               ticket={ticket}
               trigger={
