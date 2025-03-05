@@ -16,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Comments } from "@/features/comments/components/comments";
-import { CommentWithMetadata } from "@/features/comments/types/comment-with-metadata";
 import { TicketMoreMenu } from "@/features/tickets/components//ticket-more-menu";
 import { TICKET_ICONS } from "@/features/tickets/constants";
 import { TicketId } from "@/features/tickets/types";
@@ -63,7 +61,7 @@ type TicketItemProps = {
     };
   }> & { isOwner: boolean };
   isDetail?: boolean;
-  comments?: CommentWithMetadata[];
+  comments?: React.ReactNode;
 };
 
 export const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
@@ -129,7 +127,7 @@ export const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
           )}
         </div>
       </div>
-      {isDetail ? <Comments comments={comments} ticketId={ticket.id} /> : null}
+      {comments}
     </div>
   );
 };

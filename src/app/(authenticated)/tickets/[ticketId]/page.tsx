@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/breacrumbs";
 import { Separator } from "@/components/ui/separator";
+import { Comments } from "@/features/comments/components/comments";
 import { getComments } from "@/features/comments/queries/get-comments";
 import { TicketItem } from "@/features/tickets/components/ticket-item";
 import { getTicket } from "@/features/tickets/queries/get-ticket";
@@ -36,7 +37,11 @@ const TicketPage = async ({ params }: TicketPageProps) => {
       />
       <Separator />
       <div className="flex animate-fade-in-from-top justify-center">
-        <TicketItem comments={comments} ticket={ticket} isDetail />
+        <TicketItem
+          ticket={ticket}
+          isDetail
+          comments={<Comments ticketId={ticket.id} comments={comments} />}
+        />
       </div>
     </div>
   );
