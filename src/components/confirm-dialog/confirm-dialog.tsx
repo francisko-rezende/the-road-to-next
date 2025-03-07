@@ -21,12 +21,14 @@ type UseConfirmDialogProps = {
   description?: string;
   action: () => Promise<FromErrorToActionStateReturn>;
   trigger: React.ReactElement;
+  onSuccess?: (actionState: FromErrorToActionStateReturn) => void;
 };
 export const useConfirmDialog = ({
   action,
   trigger,
   description = "This action cannot be undone. Make sure you understand the consequences.",
   title = "Are you absolutely sure?",
+  onSuccess,
 }: UseConfirmDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,6 +45,7 @@ export const useConfirmDialog = ({
 
   const handleSuccess = () => {
     setIsOpen((previousState) => !previousState);
+    onSuccess?.(actionState);
   };
 
   const dialog = (

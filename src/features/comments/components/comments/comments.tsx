@@ -22,6 +22,7 @@ type CommentsProps = {
 export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
   const [comments, setComments] = useState(paginatedComments.list);
   const [metadata, setMetadata] = useState(paginatedComments.metadata);
+
   const handleMore = async () => {
     const morePaginatedComments = await getComments(ticketId, comments.length);
     const moreComments = morePaginatedComments.list;
@@ -29,6 +30,13 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
     setComments([...comments, ...moreComments]);
     setMetadata(morePaginatedComments.metadata);
   };
+
+  const handleDeleteComment = (id: string) => {
+    setComments((prevComments) => {
+      return prevComments.filter((comment) => comment.id === id);
+    });
+  };
+
   return (
     <>
       <CardCompact
@@ -44,7 +52,13 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
               comment={comment}
               buttons={
                 comment.isOwner
-                  ? [<CommentDeleteButton key="0" id={comment.id} />]
+                  ? [
+                      <CommentDeleteButton
+                        key="0"
+                        id={comment.id}
+                        onDeleteComment={() => handleDeleteComment(comment.id)}
+                      />,
+                    ]
                   : []
               }
             />
