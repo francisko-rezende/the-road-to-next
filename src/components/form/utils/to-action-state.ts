@@ -5,6 +5,7 @@ type FromErrorToActionStateProps = {
   formData?: FormData;
 };
 
+// eslint-disable-next-line
 export type FromErrorToActionStateReturn<T = any> = {
   timeStamp: number;
   status?: "SUCCESS" | "ERROR";
