@@ -5,13 +5,13 @@ type FromErrorToActionStateProps = {
   formData?: FormData;
 };
 
-export type FromErrorToActionStateReturn = {
+export type FromErrorToActionStateReturn<T = any> = {
   timeStamp: number;
   status?: "SUCCESS" | "ERROR";
   message: string;
   payload?: FormData;
   fieldErrors: Record<string, string[] | undefined>;
-  data?: unknown;
+  data?: T;
 };
 
 export const EMPTY_FROM_ERROR_ACTION_STATE: FromErrorToActionStateReturn = {

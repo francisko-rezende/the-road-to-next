@@ -13,7 +13,7 @@ import { CommentWithMetadata } from "../../types/comment-with-metadata";
 
 type CommentCreateProps = {
   ticketId: string;
-  onCreateComment?: (comment: CommentWithMetadata) => void;
+  onCreateComment?: (comment: CommentWithMetadata | undefined) => void;
 };
 export const CommentCreateForm = ({
   ticketId,
@@ -24,8 +24,10 @@ export const CommentCreateForm = ({
     EMPTY_FROM_ERROR_ACTION_STATE,
   );
 
-  const handleSuccess = (actionState: FromErrorToActionStateReturn) => {
-    onCreateComment?.(actionState.data as CommentWithMetadata);
+  const handleSuccess = (
+    actionState: FromErrorToActionStateReturn<CommentWithMetadata | undefined>,
+  ) => {
+    onCreateComment?.(actionState.data);
   };
 
   return (

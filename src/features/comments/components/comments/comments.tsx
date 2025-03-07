@@ -37,7 +37,8 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
     });
   };
 
-  const handleCreateComment = (comment: CommentWithMetadata) => {
+  const handleCreateComment = (comment: CommentWithMetadata | undefined) => {
+    if (!comment) return;
     setComments((prevComments) => [comment, ...prevComments]);
   };
 
