@@ -11,6 +11,7 @@ export type FromErrorToActionStateReturn = {
   message: string;
   payload?: FormData;
   fieldErrors: Record<string, string[] | undefined>;
+  data?: unknown;
 };
 
 export const EMPTY_FROM_ERROR_ACTION_STATE: FromErrorToActionStateReturn = {
@@ -23,16 +24,19 @@ export const toActionState = ({
   message,
   status,
   payload,
+  data,
 }: {
   message: string;
   status: FromErrorToActionStateReturn["status"];
   payload?: FormData;
+  data?: unknown;
 }): FromErrorToActionStateReturn => ({
   message,
   fieldErrors: {},
   status,
   payload,
   timeStamp: Date.now(),
+  data,
 });
 
 export const fromErrorToActionState = ({

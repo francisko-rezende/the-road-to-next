@@ -37,12 +37,21 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
     });
   };
 
+  const handleCreateComment = (comment: CommentWithMetadata) => {
+    setComments((prevComments) => [comment, ...prevComments]);
+  };
+
   return (
     <>
       <CardCompact
         title="Create comment"
         description="A new comment will be created"
-        content={<CommentCreateForm ticketId={ticketId} />}
+        content={
+          <CommentCreateForm
+            ticketId={ticketId}
+            onCreateComment={handleCreateComment}
+          />
+        }
       />
       <div className="ml-8 flex flex-col gap-y-2">
         {comments.map((comment) => {
