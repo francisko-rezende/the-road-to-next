@@ -10,7 +10,6 @@ import { isOwner } from "@/features/auth/utils/is-owner";
 import { prisma } from "@/lib/prisma";
 
 export const deleteComment = async (id: string) => {
-  await new Promise((resolve) => setTimeout(resolve, 200));
   const { user } = await getAuthOrRedirect();
 
   const comment = await prisma.comment.findUnique({
