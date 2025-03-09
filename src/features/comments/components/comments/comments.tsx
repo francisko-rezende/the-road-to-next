@@ -1,8 +1,6 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { metadata } from "@/app/layout";
 import { CardCompact } from "@/components/card-compact";
 import { Button } from "@/components/ui/button";
 import { PaginatedData } from "@/types/pagination";
@@ -17,7 +15,7 @@ type CommentsProps = {
   paginatedComments: PaginatedData<CommentWithMetadata>;
 };
 export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteQuery({
       queryKey: ["comments", ticketId],
       queryFn: ({ pageParam }) => getComments(ticketId, pageParam),
@@ -38,16 +36,10 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
   const comments = data.pages.map((page) => page.list).flat();
 
   const handleMore = () => fetchNextPage();
-  const handleDeleteComment = (id: string) => {
-    // setComments((prevComments) => {
-    //   return prevComments.filter((comment) => comment.id === id);
-    // });
-  };
 
-  const handleCreateComment = (comment: CommentWithMetadata | undefined) => {
-    // if (!comment) return;
-    // setComments((prevComments) => [comment, ...prevComments]);
-  };
+  const handleDeleteComment = () => refetch();
+
+  const handleCreateComment = () => refetch();
 
   return (
     <>
@@ -73,7 +65,7 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
                       <CommentDeleteButton
                         key="0"
                         id={comment.id}
-                        onDeleteComment={() => handleDeleteComment(comment.id)}
+                        onDeleteComment={() => handleDeleteComment()}
                       />,
                     ]
                   : []
@@ -85,7 +77,7 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
       <div className="ml-8 flex flex-col justify-center">
         {hasNextPage && (
           <Button
-            disabled={!hasNextPage}
+            disabled={isFetchingNextPage}
             onClick={handleMore}
             variant={"ghost"}
           >
