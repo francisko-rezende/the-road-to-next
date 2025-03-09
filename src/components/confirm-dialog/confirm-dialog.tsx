@@ -1,6 +1,12 @@
-import { cloneElement, useActionState, useState } from "react";
-import { Form } from "../form";
-import { SubmitButton } from "../form/submit-button";
+import {
+  cloneElement,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { toast } from "sonner";
+import { useActionFeedback } from "../form/hooks/useActionFeedback";
 import {
   EMPTY_FROM_ERROR_ACTION_STATE,
   FromErrorToActionStateReturn,
@@ -15,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
+import { Button } from "../ui/button";
 
 type UseConfirmDialogProps = {
   title?: string;
@@ -38,15 +45,42 @@ export const useConfirmDialog = ({
     },
   });
 
-  const [actionState, formAction] = useActionState(
+  const [actionState, formAction, isPending] = useActionState(
     action,
     EMPTY_FROM_ERROR_ACTION_STATE,
   );
 
-  const handleSuccess = () => {
-    setIsOpen((previousState) => !previousState);
-    onSuccess?.(actionState);
-  };
+  const toastRef = useRef<string | number | null>(null);
+
+  useEffect(() => {
+    if (isPending) {
+      toastRef.current = toast.loading("Deleting...");
+    } else if (toastRef.current) {
+      toast.dismiss(toastRef.current);
+    }
+
+    return () => {
+      if (toastRef.current) {
+        toast.dismiss(toastRef.current);
+      }
+    };
+  }, [isPending]);
+
+  useActionFeedback({
+    actionState: actionState,
+    onSuccess: ({ onArgs: actionState }) => {
+      if (actionState.message) {
+        toast.success(actionState.message);
+      }
+
+      onSuccess?.(actionState);
+    },
+    onError: ({ onArgs: actionState }) => {
+      if (actionState.message) {
+        toast.error(actionState.message);
+      }
+    },
+  });
 
   const dialog = (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -58,13 +92,9 @@ export const useConfirmDialog = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Form
-              onSuccess={handleSuccess}
-              action={formAction}
-              actionState={actionState}
-            >
-              <SubmitButton>Confirm</SubmitButton>
-            </Form>
+            <form action={formAction}>
+              <Button>Confirm</Button>
+            </form>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

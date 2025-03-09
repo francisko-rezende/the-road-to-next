@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
 
 export const deleteTicket = async (ticketId: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 200));
   const { user } = await getAuthOrRedirect();
   try {
     const ticket = await prisma.ticket.findUnique({ where: { id: ticketId } });
