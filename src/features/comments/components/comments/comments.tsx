@@ -2,6 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { metadata } from "@/app/layout";
 import { CardCompact } from "@/components/card-compact";
 import { Button } from "@/components/ui/button";
 import { PaginatedData } from "@/types/pagination";
@@ -23,11 +24,18 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
       initialPageParam: undefined as string | undefined,
       getNextPageParam: (lastPage) =>
         lastPage.metadata.hasNextPage ? lastPage.metadata.cursor : undefined,
+      initialData: {
+        pages: [
+          {
+            list: paginatedComments.list,
+            metadata: paginatedComments.metadata,
+          },
+        ],
+        pageParams: [undefined],
+      },
     });
 
-  const comments = data?.pages.map((page) => page.list).flat() ?? [];
-  // const [comments, setComments] = useState(paginatedComments.list);
-  // const [metadata, setMetadata] = useState(paginatedComments.metadata);
+  const comments = data.pages.map((page) => page.list).flat();
 
   const handleMore = () => fetchNextPage();
   const handleDeleteComment = (id: string) => {
