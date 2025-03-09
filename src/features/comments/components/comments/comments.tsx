@@ -1,8 +1,9 @@
 "use client";
 
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import { CardCompact } from "@/components/card-compact";
-import { Button } from "@/components/ui/button";
 import { PaginatedData } from "@/types/pagination";
 import { getComments } from "../../queries/get-comments";
 import { CommentWithMetadata } from "../../types/comment-with-metadata";
@@ -37,12 +38,19 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
 
   const comments = data.pages.map((page) => page.list).flat();
 
-  const handleMore = () => fetchNextPage();
-
   const queryClient = useQueryClient();
 
   const handleDeleteComment = () => queryClient.invalidateQueries({ queryKey });
+
   const handleCreateComment = () => queryClient.invalidateQueries({ queryKey });
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage]);
 
   return (
     <>
@@ -77,17 +85,22 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
           );
         })}
       </div>
-      <div className="ml-8 flex flex-col justify-center">
-        {hasNextPage && (
-          <Button
-            disabled={isFetchingNextPage}
-            onClick={handleMore}
-            variant={"ghost"}
-          >
-            More
-          </Button>
+      <div ref={ref}>
+        {!hasNextPage && (
+          <p className="text-right text-xs italic">No more comments</p>
         )}
       </div>
+      {/* <div className="ml-8 flex flex-col justify-center"> */}
+      {/*   {hasNextPage && ( */}
+      {/*     <Button */}
+      {/*       disabled={isFetchingNextPage} */}
+      {/*       onClick={handleMore} */}
+      {/*       variant={"ghost"} */}
+      {/*     > */}
+      {/*       More */}
+      {/*     </Button> */}
+      {/*   )} */}
+      {/* </div> */}
     </>
   );
 };
