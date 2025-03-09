@@ -13,10 +13,11 @@ export const getComments = async (ticketId: string, cursor?: string) => {
   };
 
   const { user } = await getAuth();
-  const [comments, count] = await prisma.$transaction([
+  //eslint-disable-next-line
+  let [comments, count] = await prisma.$transaction([
     prisma.comment.findMany({
       where,
-      take,
+      take: take + 1,
       include: {
         user: {
           select: {
@@ -36,6 +37,9 @@ export const getComments = async (ticketId: string, cursor?: string) => {
     }),
   ]);
 
+  const hasNextPage = comments.length > take;
+  comments = hasNextPage ? comments.slice(0, -1) : comments;
+
   return {
     list: comments.map((comment) => {
       return {
@@ -45,7 +49,7 @@ export const getComments = async (ticketId: string, cursor?: string) => {
     }),
     metadata: {
       count,
-      hasNextPage: true, //todo
+      hasNextPage,
       cursor: comments.at(-1)?.id,
     },
   };
