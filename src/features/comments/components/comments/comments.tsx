@@ -1,5 +1,6 @@
 "use client";
 
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CardCompact } from "@/components/card-compact";
 import { Button } from "@/components/ui/button";
@@ -15,26 +16,29 @@ type CommentsProps = {
   paginatedComments: PaginatedData<CommentWithMetadata>;
 };
 export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
-  const [comments, setComments] = useState(paginatedComments.list);
-  const [metadata, setMetadata] = useState(paginatedComments.metadata);
-
-  const handleMore = async () => {
-    const morePaginatedComments = await getComments(ticketId, metadata.cursor);
-    const moreComments = morePaginatedComments.list;
-
-    setComments([...comments, ...moreComments]);
-    setMetadata(morePaginatedComments.metadata);
-  };
-
-  const handleDeleteComment = (id: string) => {
-    setComments((prevComments) => {
-      return prevComments.filter((comment) => comment.id === id);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["comments", ticketId],
+      queryFn: ({ pageParam }) => getComments(ticketId, pageParam),
+      initialPageParam: undefined as string | undefined,
+      getNextPageParam: (lastPage) =>
+        lastPage.metadata.hasNextPage ? lastPage.metadata.cursor : undefined,
     });
+
+  const comments = data?.pages.map((page) => page.list).flat() ?? [];
+  // const [comments, setComments] = useState(paginatedComments.list);
+  // const [metadata, setMetadata] = useState(paginatedComments.metadata);
+
+  const handleMore = () => fetchNextPage();
+  const handleDeleteComment = (id: string) => {
+    // setComments((prevComments) => {
+    //   return prevComments.filter((comment) => comment.id === id);
+    // });
   };
 
   const handleCreateComment = (comment: CommentWithMetadata | undefined) => {
-    if (!comment) return;
-    setComments((prevComments) => [comment, ...prevComments]);
+    // if (!comment) return;
+    // setComments((prevComments) => [comment, ...prevComments]);
   };
 
   return (
@@ -71,8 +75,12 @@ export const Comments = ({ ticketId, paginatedComments }: CommentsProps) => {
         })}
       </div>
       <div className="ml-8 flex flex-col justify-center">
-        {metadata.hasNextPage && (
-          <Button onClick={handleMore} variant={"ghost"}>
+        {hasNextPage && (
+          <Button
+            disabled={!hasNextPage}
+            onClick={handleMore}
+            variant={"ghost"}
+          >
             More
           </Button>
         )}
